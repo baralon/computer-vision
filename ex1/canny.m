@@ -1,4 +1,4 @@
-function result = canny(file_name, sigma,L_th,H_th)
+function result = canny(file_name, sigma, L_th, H_th)
 G_dx=Derive_Gauss_x(sigma);
 G_dy=Derive_Gauss_y(sigma);
 

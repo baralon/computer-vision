@@ -1,6 +1,5 @@
 function result = Hysteresis(img,H_th, L_th)
 [h,w] = size(img);
-mask = [1 1 1; 1 0 1; 1 1 1];
 lower_values_removed = img;
 lower_values_removed(lower_values_removed < L_th) = 0;
 % marking the pixels that are between 
@@ -28,3 +27,5 @@ for i=2:h-1
         end  
     end
 end
+
+% bwselect
