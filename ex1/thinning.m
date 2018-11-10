@@ -21,7 +21,7 @@ for i=2:h-1
     for j=2:w-1
         
         if (process_orientation(i,j) == 0)
-            if (G_strength(i,j) > max(G_strength(i+1, j), G_strength(i-1, j)))
+            if (G_strength(i,j) > max(G_strength(i, j+1), G_strength(i, j-1)))
                result(i,j) =  G_strength(i,j);
             end
             
@@ -31,12 +31,12 @@ for i=2:h-1
             end
             
         elseif(process_orientation(i,j) == -45)
-            if (G_strength(i,j) > max(G_strength(i+1, j-1), G_strength(i-1, j+1)))
+            if (G_strength(i,j) > max(G_strength(i-1, j+1), G_strength(i+1, j-1)))
                result(i,j) =  G_strength(i,j);
             end
             
         elseif(process_orientation(i,j) == 90)
-            if (G_strength(i,j) > max(G_strength(i, j+1), G_strength(i, j-1)))
+            if (G_strength(i,j) > max(G_strength(i+1, j), G_strength(i-1, j)))
                result(i,j) =  G_strength(i,j);
             end 
         end

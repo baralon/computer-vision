@@ -9,7 +9,9 @@ l_y = conv2(img, G_dy,'same');
 G_magnitute = sqrt(l_x .^2 + l_y.^2);
 G_orientation = atan2(l_y,l_x)*180/pi;
 thinned = thinning(G_magnitute,G_orientation);
-result = Hysteresis(thinned, H_th, L_th);
+result = Hysteresis(G_magnitute, H_th, L_th);
+result = thinned;
+
 
 end
 

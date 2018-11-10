@@ -8,7 +8,7 @@ meshed = meshgrid(1:5)
 % C 
 
 %Submit this image:
-imshow(canny('Images/panda.gif', 2, 10 ,5), [] );
+imshow(canny('Images/panda.gif', 3, 1 ,2), [] );
 
 Figure; imshow(E1,[]);
 
