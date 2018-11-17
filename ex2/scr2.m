@@ -147,10 +147,10 @@ D= norm(COP_R_inhomo(1:3) - COP_L(1:3));
    
      COP_R_homo = COP_R ./ COP_R(4);
      e_L= proj(M_L, homo(COP_R));
-     
      e_R= proj(M_R, homo(COP_L));
  
-     F=
+     F = vector_to_vector_product_matrix([e_R' 1]') * M_R * pinv(M_L);
+     F = F ./ F(3,3);
      
  % Please normalize F by F(3,3).
  
@@ -173,7 +173,7 @@ D= norm(COP_R_inhomo(1:3) - COP_L(1:3));
  
  % Choose points from image 1 (look at help getpts)
  figure(f1);
- [Px,Py]=getpts
+ [Px,Py ]= getpts
  
 % Display the  set of pipolar lines which corresponds to the chosen points
 
@@ -214,8 +214,9 @@ end
  % Write a function 'match_best()' that finds the most similar feature to Features_L(ind_L)
  % in the right image. The list of fetaures in the right image is given by
  % Features_R.
- % Test it for ind_L=10.
- index_R=match_best(Features_L, Features_R, indel_L)
+ % Test it for ind_L=10
+ ind_L=10;
+ index_R = match_best(Features_L, Features_R, ind_L)
  
  % Use matlab function for matching all the features (instead of applying
  % the oned you wrote)
