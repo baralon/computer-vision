@@ -108,15 +108,16 @@ D= norm(COP_R_inhomo(1:3) - COP_L(1:3));
     hold on;
     f1=gcf;
     
+    % display the projection on the two images
+    figure(f1);
+    plot(p_L(1),p_L(2),'*r');
+    
+    
     figure;
     imshow(im_R,[])
     hold on;
     f2=gcf;
 
-    % display the projection on the two images
-    figure(f1);
-    plot(p_L(1),p_L(2),'*r');
-    
     figure(f2);
     plot(p_R(1),p_R(2),'*r');
     
@@ -126,14 +127,14 @@ D= norm(COP_R_inhomo(1:3) - COP_L(1:3));
     hold on;
     f3=gcf;
     
+    figure(f3);
+    plot(q_L(1),q_R(2),'*r');
+    
     figure;
     imshow(im_R,[])
     hold on;
     f4=gcf;
-    
-    figure(f3);
-    plot(q_L(1),q_R(2),'*r');
-    
+        
     figure(f4);
     plot(q_R(1),q_R(2),'*r');
     
@@ -235,7 +236,8 @@ end
  Pairs_clean=remove_incorrect_matches(Pairs,Points_L,Points_R,F,th)
  
  % display the matching features as before with only the correct mathced features .
- 
+ figure;
+ showMatchedFeatures(im_L, im_R,Points_L(Pairs_clean(:,1),:),Points_R(Pairs_clean(:,2),:),'montage');
  
  
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
