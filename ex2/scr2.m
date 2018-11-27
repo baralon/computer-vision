@@ -8,7 +8,7 @@
  % The projection matrix
     M_L= [1100.504780,0,331.023000,0; 0, 1097.763735,259.386377, 0; 0, 0,1,0]
     
- %Rotation: 
+ %Rotation:   
      R_L=[ 1  0 0 
            0 1 0
            0 0 1]
@@ -17,8 +17,7 @@
     
 % Compute COP1:
 % it is [0 0 0 1]
-  T_L= null(M_L) 
-
+  T_L= [0, 0, 0]
 %Compute the image center:
 % we can find the center of the image in the projection materix
      ox_L = M_L(1, 3);
@@ -62,8 +61,8 @@
 % Compute intrinsic projection matrices: Mint1 and Mint2
 
    Mint_R= [Sx_R*f_R 0 ox_R; 
-           0 Sy_R*f_R  oy_R
-           0 0 1];
+            0 Sy_R*f_R  oy_R
+            0 0 1];
       
 % Compute the projection matrix
     M_R= Mint_R * [R_R R_R * -T_R];
@@ -71,7 +70,7 @@
 % Compute 
     COP_L = null(M_L); 
     COP_R = null(M_R);
-    COP_R_inhomo = COP_R ./ COP_R(4)
+    COP_R_inhomo = COP_R ./ COP_R(4);
     
 % What is the distance between COP_L and COP_R?
 D= norm(COP_R_inhomo(1:3) - COP_L(1:3));
