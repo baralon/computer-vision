@@ -178,7 +178,7 @@ D= norm(COP_R_inhomo(1:3) - COP_L(1:3));
 % Display the  set of pipolar lines which corresponds to the chosen points
 
 for i=1:length(Px)
-    draw_epipolar_lines(im_L,im_R,F,[Px(i),Py(i)]',f1,f2)
+    draw_epipolar_lines(im_L,im_R,F,[Px(i),Py(i)]',f1,f2);
 end
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
