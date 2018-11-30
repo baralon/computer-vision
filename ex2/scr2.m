@@ -269,19 +269,44 @@ display("distance on right image: " + string(right_distance) + " pixels")
 
 %% ADD YOUR PART HERE
 
-% section C.e
+% section C
+
+
 patch_size = [3,3];
 disparity_range = [40,120]
 view_1 = imread('view1.tif');
-[result,m_distance,m_lookup]   = SectionC('view1.tif', 'view5.tif', patch_size, disparity_range);
+% regular intencity
+[result_intencity,m_distance,m_lookup]   = disparity_generic('view1.tif', 'view5.tif', patch_size, disparity_range,'intencity');
 D2d = [size(view_1,1), size(view_1,2), 2];
+disparity_f = figure();
+imshow(result_intencity, []);
+title('disparity image');
 
 for i = 1:size(view_1,1)
     for j = 1:size(view_1,2)
-        D2d(i,j,1) = result(i,j);
+        D2d(i,j,1) = result_intencity(i,j);
         D2d(i,j,2) = 0;
     end
 end
 
+imshow(imwarp(view_1,D2d),[])
+title('imwarp image');
+
+% gradient disparity
+[result_intencity,m_distance,m_lookup]   = disparity_generic('view1.tif', 'view5.tif', patch_size, disparity_range,'sdf');
+D2d = [size(view_1,1), size(view_1,2), 2];
+disparity_f = figure();
+imshow(result_intencity, []);
+title('disparity image gradient');
+
+for i = 1:size(view_1,1)
+    for j = 1:size(view_1,2)
+        D2d(i,j,1) = result_intencity(i,j);
+        D2d(i,j,2) = 0;
+    end
+end
+
+imshow(imwarp(view_1,D2d),[])
+title('imwarp image gradient');
 
   
