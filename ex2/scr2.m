@@ -232,7 +232,7 @@ end
 % Use the function  'sampsonDistance()' for computing the distance between a point and a
  % line
  
- Pairs_clean=remove_incorrect_matches(Pairs,Points_L,Points_R,F,th)
+ Pairs_clean=remove_incorrect_matches(Pairs,Points_L,Points_R,F,0.01)
  
  % display the matching features as before with only the correct mathced features .
  figure;
@@ -243,9 +243,45 @@ end
 % Calibrated Stereo - Compute Matching
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
+% Choosing manual points: 
+% I will do a verification to the first point that is returned in P
+ps1 = Points_L(Pairs_clean(:,1),:).Location;
+ps2 = Points_R(Pairs_clean(:,2),:).Location
+P = stereo_list(ps1,ps2, M_L,M_R)
+
+% Verifying that the when projecting to the right and left image the
+% distance is not too big with the origin point 
+first_P = P(1,:);
+first_P_homo = [first_P, 1]';
+first_project_L = M_L * first_P_homo;
+p_L_candidate = first_project_L ./ first_project_L(3);
+p_L_candidate = p_L_candidate(1:2);
+
+first_project_R = M_R * first_P_homo;
+p_R_candidate = first_project_R ./ first_project_R(3);
+p_R_candidate = p_R_candidate(1:2);
+
+distance_left = norm(ps1(1,:) - p_L_candidate');
+right_distance = norm(ps2(1,:) - p_R_candidate');
+display("distance on left image: " + string(distance_left) + " pixels")
+display("distance on right image: " + string(right_distance) + " pixels")
+
+
 %% ADD YOUR PART HERE
 
+% section C.e
+patch_size = [3,3];
+disparity_range = [40,120]
+view_1 = imread('view1.tif');
+[result,m_distance,m_lookup]   = SectionC('view1.tif', 'view5.tif', patch_size, disparity_range);
+D2d = [size(view_1,1), size(view_1,2), 2];
+
+for i = 1:size(view_1,1)
+    for j = 1:size(view_1,2)
+        D2d(i,j,1) = result(i,j);
+        D2d(i,j,2) = 0;
+    end
+end
 
 
- 
   
