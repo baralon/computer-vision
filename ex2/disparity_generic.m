@@ -1,4 +1,4 @@
-function [m, m_distance, m_lookup] = disparity_generic(im1, im2, patch_size, disparity_range, disparity_type)
+function [m, m_distance, m_lookup, m_real_values] = disparity_generic(im1, im2, patch_size, disparity_range, disparity_type)
 
 view1_img = imread(im1);
 view2_img = imread(im2);
@@ -11,6 +11,7 @@ end
 [rows,colls] = size(view1_img);
 m_distance = ones(rows, colls) * -1;
 m = zeros(rows, colls);
+m_real_values = zeros(rows, colls);
 m_lookup = zeros(rows, colls, 2);
 
 
@@ -20,8 +21,8 @@ for i = patch_size(1):size(view1_img,1) - patch_size(1)
        patch = (view1_img(i-floor(patch_size(1)/2):i + floor(patch_size(1)/2), j-floor(patch_size(2)/2):j+floor(patch_size(2)/2)));
        v1 = double(reshape(patch, [1, patch_size(1) * patch_size(2)]));
        v1_norm = sqrt(v1*v1');
-       temp_legit_range = [linspace(j - disparity_range(2), j - disparity_range(1), disparity_range(2) - (disparity_range(1) -1)), ...
-                           linspace(j + disparity_range(1), j + disparity_range(2), disparity_range(2) - (disparity_range(1) -1))];
+       temp_legit_range = [j - disparity_range(2): j - disparity_range(1), ...
+                            j + disparity_range(1):j+ disparity_range(2)];
        legit_range =  [];
         for k = 1: length(temp_legit_range)
             if(temp_legit_range(k) - floor(patch_size(2)/2) > 0 && temp_legit_range(k) + floor(patch_size(2)/2) < colls)
@@ -38,7 +39,8 @@ for i = patch_size(1):size(view1_img,1) - patch_size(1)
            distance = (v1 * v2_candidate') / (v1_norm * v2_candidate_norm);
            if (distance > m_distance(i,j))
               m_distance(i,j) =  distance;
-              m(i,j) =  abs(j - z);
+              m(i,j) =  abs(j - legit_range(z));
+              m_real_values(i,j) = j - legit_range(z);
               m_lookup(i,j,:) = [i,legit_range(z)];      
            end
            

@@ -16,7 +16,6 @@
     f_L=1.0
     
 % Compute COP1:
-% it is [0 0 0 1]
   T_L= [0, 0, 0]
 %Compute the image center:
 % we can find the center of the image in the projection materix
@@ -70,10 +69,10 @@
 % Compute 
     COP_L = null(M_L); 
     COP_R = null(M_R);
-    COP_R_inhomo = COP_R ./ COP_R(4);
+    COP_R_homo = COP_R ./ COP_R(4);
     
 % What is the distance between COP_L and COP_R?
-D= norm(COP_R_inhomo(1:3) - COP_L(1:3));
+D= norm(COP_R_homo(1:3) - COP_L(1:3));
     
     
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -274,39 +273,42 @@ display("distance on right image: " + string(right_distance) + " pixels")
 
 patch_size = [3,3];
 disparity_range = [40,120]
-view_1 = imread('view1.tif');
 % regular intencity
-[result_intencity,m_distance,m_lookup]   = disparity_generic('view1.tif', 'view5.tif', patch_size, disparity_range,'intencity');
-D2d = [size(view_1,1), size(view_1,2), 2];
+[result_intencity]   = disparity_generic('view1.tif', 'view5.tif', patch_size, disparity_range,'intencity');
 disparity_f = figure();
 imshow(result_intencity, []);
-title('disparity image');
-
-for i = 1:size(view_1,1)
-    for j = 1:size(view_1,2)
-        D2d(i,j,1) = result_intencity(i,j);
-        D2d(i,j,2) = 0;
-    end
-end
-
+title('disparity image intencity');
+D2d = zeros(size(result_intencity,1), size(result_intencity, 2), 2);
+D2d(:,:,1) = result_intencity;
+D2d(:,:,2) = 0
+view_1 = imread('view1.tif');
+figure();
 imshow(imwarp(view_1,D2d),[])
-title('imwarp image');
+title('imwarp image intencity');
+
+depth_map_intencity = arrayfun( @(x) depth(160,1,x), result_intencity);
+disparity_depth_f = figure();
+imshow(depth_map_intencity, []);
+title('disparity depth');
+
 
 % gradient disparity
-[result_intencity,m_distance,m_lookup]   = disparity_generic('view1.tif', 'view5.tif', patch_size, disparity_range,'sdf');
-D2d = [size(view_1,1), size(view_1,2), 2];
+[result_gradient]   = disparity_generic('view1.tif', 'view5.tif', patch_size, disparity_range,'sdf');
 disparity_f = figure();
-imshow(result_intencity, []);
+imshow(result_gradient, []);
 title('disparity image gradient');
-
-for i = 1:size(view_1,1)
-    for j = 1:size(view_1,2)
-        D2d(i,j,1) = result_intencity(i,j);
-        D2d(i,j,2) = 0;
-    end
-end
-
-imshow(imwarp(view_1,D2d),[])
+D2d = zeros(size(result_gradient,1), size(result_gradient, 2), 2);
+D2d(:,:,1) = result_gradient;
+D2d(:,:,2) = 0;
+figure()
+imshow(imwarp(view_1,D2d),[]);
 title('imwarp image gradient');
+
+depth_map_gradient = arrayfun( @(x) depth(160,1,x), result_gradient);
+disparity_depth_f = figure();
+imshow(depth_map_gradient, []);
+title('disparity depth gradient' );
+
+
 
   
