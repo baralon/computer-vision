@@ -231,7 +231,7 @@ end
 % Use the function  'sampsonDistance()' for computing the distance between a point and a
  % line
  
- Pairs_clean=remove_incorrect_matches(Pairs,Points_L,Points_R,F,0.01)
+ Pairs_clean=remove_incorrect_matches(Pairs,Points_L,Points_R,F,0.09)
  
  % display the matching features as before with only the correct mathced features .
  figure;
@@ -271,8 +271,8 @@ display("distance on right image: " + string(right_distance) + " pixels")
 % section C
 
 
-patch_size = [3,3];
-disparity_range = [40,120]
+patch_size = [15,15];
+disparity_range = [40,120];
 % regular intencity
 [result_intencity]   = disparity_generic('view1.tif', 'view5.tif', patch_size, disparity_range,'intencity');
 disparity_f = figure();
