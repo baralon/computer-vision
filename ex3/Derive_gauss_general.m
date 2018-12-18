@@ -8,4 +8,4 @@ if direction == 'y'
     derive_mask = derive_mask';
 end
 
-derived_gauss = conv2(mask_g, derive_mask, 'same');
+derived_gauss = derive_mask;
