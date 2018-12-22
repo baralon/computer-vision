@@ -8,10 +8,12 @@ mov=read(vid);
 % vidObj = VideoWriter('new_marple.avi');
 % open(vidObj);
 
-frame_jumps = [5, 10];
-sigmas = [7, 10,] ;
-region_sizes = [10, 15];
+frame_jumps = [4, 10];
+sigmas = [1, 7,10] ;
+% sigmas = [10] ;
+region_sizes = [4, 6, 10, 15, 20];
 resizes = [ 1];
+min_eign = 0;
 
 for frames_jump = frame_jumps
     for sigma = sigmas
@@ -23,18 +25,19 @@ for frames_jump = frame_jumps
                                      "_resize_factor_" + resize_factor;
                                  
                 mkdir(target_folder_name);
-                for i=1:2
+                for i=1:5
                     if (i*frames_jump > size(mov,4) || ...
                         i*frames_jump+frames_jump > size(mov,4)) 
                         continue;
                     end
-                    frame = 5 + i*frames_jump;
+                    frame = 7 + i*frames_jump;
                     im=rgb2gray(mov(:,:,:,frame)); %covert to gray scale
-                    im=imresize(im,resize_factor); %resize the image
+                    im=double(imresize(im,resize_factor)); %resize the image
                     im2=rgb2gray(mov(:,:,:,frame+frames_jump));
-                    im2=imresize(im2,resize_factor);
+                    im2=double(imresize(im2,resize_factor));
                     tic;
-                    [u12,v12] = OF(im,im2,sigma,region_size);
+                    [u12,v12] = OF(double(im),double(im2),sigma,region_size, min_eign);
+                    
                     toc;
                     [X Y]=meshgrid(1:size(im,2),1:size(im,1));
                     nu12=medfilt2(u12,[5 5]);
@@ -59,14 +62,14 @@ for frames_jump = frame_jumps
                     optical_flow_mag_handle = figure();
                     imshow(label2rgb(seg_OF_magnitude(u12,v12, 0.1)),[]);
                     res = getframe;
-                    imwrite(res.cdata, sprintf(target_folder_name + '/' + "mag_optical_flow" +  img_name + '_%d.jpg',i, diff));
+%                     imwrite(res.cdata, sprintf(target_folder_name + '/' + "mag_optical_flow" +  img_name + '_%d.jpg',i, diff));
                     close(optical_flow_mag_handle);
                     
                     
                     D = zeros(size(im,1), size(im,2), 2);
                     D(:,:,1) = u12 ;
                     D(:,:,2) = v12 ;
-                    projection = imwarp(im, D);
+                    projection = imwarp(double(im), D);
                     diff = sum(abs(double(im2)-double(projection)), 'all');
                     f = figure();
                     imshow(projection,[]);

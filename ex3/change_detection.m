@@ -4,12 +4,12 @@ background_map = zeros(size(seq,1), size(seq,2));
 
 gray_scale_seq = zeros(size(seq,1),size(seq,2), size(seq,4));
 
-number_of_frames = size(seq,4)  ;
+number_of_frames = size(seq,4);
 window = 6;
 [x,y] = meshgrid(-window:window, -window:window);
 mask_g = exp(-(x.^2 + y.^2)/(2*2^2));
 mask_g=mask_g./sum(mask_g(:));
-% calculating greqscle map while cleaning noise
+% calculating greqscle mapd while cleaning noise
 for k =1: size(seq,4)
     gray_scale_seq(:,:,k) = conv2(rgb2gray(seq(:,:,:,k)), mask_g,'same');
 end
