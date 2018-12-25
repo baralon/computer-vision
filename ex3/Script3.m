@@ -1,19 +1,19 @@
 %Script HW3
 
-img_name = 'SLIDE';
-vid = VideoReader('SLIDE.mp4');
+img_name = 'moving_me';
+vid = VideoReader('moving_me.mp4');
 mov=read(vid);
 
 % currAxes = axes;
 % vidObj = VideoWriter('new_marple.avi');
 % open(vidObj);
 
-frame_jumps = [4, 10];
-sigmas = [1, 7,10] ;
+frame_jumps = [3];
+sigmas = [7] ;
 % sigmas = [10] ;
-region_sizes = [4, 6, 10, 15, 20];
+region_sizes = [15];
 resizes = [ 1];
-min_eign = 0;
+min_eign = 100;
 
 for frames_jump = frame_jumps
     for sigma = sigmas
